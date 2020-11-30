@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import App from './components/HelloWorld'
+import App from './components/Home'
 
 new Vue({
   el: 'app', // 「el」はアプリケーションを紐付ける要素のセレクタです
