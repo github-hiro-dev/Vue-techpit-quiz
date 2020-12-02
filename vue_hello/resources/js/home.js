@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import App from './components/Home'
+import App from './components/page/Home'
 import SocialSharing from 'vue-social-sharing'
 
 Vue.use(SocialSharing);
