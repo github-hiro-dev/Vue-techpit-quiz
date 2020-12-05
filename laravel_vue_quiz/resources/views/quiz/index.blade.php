@@ -10,9 +10,9 @@
 
 <body>
     <div id="app">
-        <quiz />
+        <router-view />
     </div>
-    <script src="/js/quiz.js"></script>
+    <script src="/js/app.js"></script>
 </body>
 
 </html>
