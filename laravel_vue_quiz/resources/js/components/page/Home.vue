@@ -68,10 +68,10 @@
 </template>
 
 <script>
-import TheHeader from "../layout/TheHeader";
-import TheFooter from "../layout/TheFooter";
-import TheSidebar from "../layout/TheSidebar";
-import BarChart from "../module/BarChart";
+import TheHeader from "../layout/TheHeader"
+import TheFooter from "../layout/TheFooter"
+import TheSidebar from "../layout/TheSidebar"
+import BarChart from "../module/BarChart"
 
 export default {
   components: {

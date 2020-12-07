@@ -184,6 +184,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -192,6 +202,20 @@ __webpack_require__.r(__webpack_exports__);
     TheHeader: _layout_TheHeader__WEBPACK_IMPORTED_MODULE_0__["default"],
     TheFooter: _layout_TheFooter__WEBPACK_IMPORTED_MODULE_1__["default"],
     TheSidebar: _layout_TheSidebar__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  data: function data() {
+    return {
+      quizData: []
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    var categories = this.$route.query.categories;
+    this.$http.get('/api/quiz?categories=${categoriees}').then(function (response) {
+      _this.quizData = response.data;
+      console.log(_this.quizData);
+    });
   }
 });
 
@@ -1135,7 +1159,69 @@ var render = function() {
         _c(
           "div",
           { staticClass: "container" },
-          [_vm._m(0), _vm._v(" "), _c("the-sidebar")],
+          [
+            _c("article", { staticClass: "col-md-8 col-xs-12" }, [
+              _c("section", [
+                _vm._m(0),
+                _vm._v(" "),
+                _c("p", [
+                  _vm._v("正しい敬語を使った表現を１つ選んでください。")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "quiz-answer__list" }, [
+                  _c(
+                    "ul",
+                    [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _vm._m(2),
+                      _vm._v(" "),
+                      _vm._m(3),
+                      _vm._v(" "),
+                      _vm._m(4),
+                      _vm._v(" "),
+                      _vm._l(_vm.answers, function(answer, index) {
+                        return _c("li", { key: index }, [
+                          _c("a", { attrs: { href: "" } }, [
+                            _c(
+                              "button",
+                              {
+                                attrs: { disabled: _vm.isAnswerNotAlready },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.goAnsewer(index + 1)
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "@" +
+                                    _vm._s(index + 1) +
+                                    "\n                  "
+                                )
+                              ]
+                            ),
+                            _vm._v(
+                              "\n                  @" +
+                                _vm._s(answer) +
+                                "  \n                "
+                            )
+                          ])
+                        ])
+                      })
+                    ],
+                    2
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(5),
+              _vm._v(" "),
+              _vm._m(6)
+            ]),
+            _vm._v(" "),
+            _c("the-sidebar")
+          ],
           1
         )
       ]),
@@ -1150,133 +1236,141 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("article", { staticClass: "col-md-8 col-xs-12" }, [
-      _c("section", [
-        _c("h2", { staticClass: "quiz-question-h2" }, [
-          _c("img", {
-            staticClass: "quiz-question__logo",
-            attrs: { src: "/images/what-is-mark.png" }
-          }),
-          _vm._v("\n            第1問\n          ")
-        ]),
-        _vm._v(" "),
-        _c("p", [_vm._v("正しい敬語を使った表現を１つ選んでください。")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "quiz-answer__list" }, [
-          _c("ul", [
-            _c("li", [
-              _c("a", [_c("button", [_vm._v("1")])]),
-              _vm._v(
-                "\n                受付でうかがってください。\n              "
-              )
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("a", [_c("button", [_vm._v("2")])]),
-              _vm._v(
-                "\n                課長がおっしゃったように、ファイルをご覧ください。\n              "
-              )
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("a", [_c("button", [_vm._v("3")])]),
-              _vm._v(
-                "\n                部長が申されたように進めていきます。\n              "
-              )
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("a", [_c("button", [_vm._v("4")])]),
-              _vm._v(
-                "\n                ○△商事の□□様がお越しになられました。\n              "
-              )
-            ])
-          ])
-        ])
+    return _c("h2", { staticClass: "quiz-question-h2" }, [
+      _c("img", {
+        staticClass: "quiz-question__logo",
+        attrs: { src: "/images/what-is-mark.png" }
+      }),
+      _vm._v("\n            第1問\n          ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [
+      _c("a", [_c("button", [_vm._v("1")])]),
+      _vm._v("\n                受付でうかがってください。\n              ")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [
+      _c("a", [_c("button", [_vm._v("2")])]),
+      _vm._v(
+        "\n                課長がおっしゃったように、ファイルをご覧ください。\n              "
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [
+      _c("a", [_c("button", [_vm._v("3")])]),
+      _vm._v(
+        "\n                部長が申されたように進めていきます。\n              "
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [
+      _c("a", [_c("button", [_vm._v("4")])]),
+      _vm._v(
+        "\n                ○△商事の□□様がお越しになられました。\n              "
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("section", [
+      _c("h2", { staticClass: "quiz-correct-h2" }, [
+        _c("img", {
+          staticClass: "quiz-correct__logo",
+          attrs: { src: "/images/correct-mark.png" }
+        }),
+        _vm._v("正解\n          ")
       ]),
       _vm._v(" "),
-      _c("section", [
-        _c("h2", { staticClass: "quiz-correct-h2" }, [
-          _c("img", {
-            staticClass: "quiz-correct__logo",
-            attrs: { src: "/images/correct-mark.png" }
-          }),
-          _vm._v("正解\n          ")
-        ]),
-        _vm._v(" "),
-        _c("p", [
-          _c("button", { staticClass: "quiz-correct-answer" }, [_vm._v("1")])
-        ]),
-        _vm._v(" "),
-        _c("button", [_vm._v("正解を表示する")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "alert alert-info" }, [
-          _c("strong", [_vm._v("正解!")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "alert alert-danger" }, [
-          _c("strong", [_vm._v("不正解!")])
-        ])
+      _c("p", [
+        _c("button", { staticClass: "quiz-correct-answer" }, [_vm._v("1")])
       ]),
       _vm._v(" "),
-      _c("section", [
-        _c("h2", { staticClass: "quiz-commentary-h2" }, [
-          _c("img", {
-            staticClass: "quiz-commentary__logo",
-            attrs: { src: "/images/commentary-mark.png" }
-          }),
-          _vm._v("解説\n          ")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "quiz-commentary__text" }, [
-          _vm._v("\n            1）3）4）は、どこが間違っていたの？ "),
-          _c("br"),
-          _vm._v("\n            1）受付でうかがってください。"),
-          _c("br"),
-          _vm._v(
-            "\n            「うかがう」は謙譲語。謙譲語は自分または身内（自分の会社も含みます）の者に使う言葉で、相手に使うのは間違いです。"
-          ),
-          _c("br"),
-          _vm._v("\n            『受付でお尋ねください。』が正解です。"),
-          _c("br"),
-          _c("br"),
-          _vm._v("\n            3）部長が申されたように進めていきます。"),
-          _c("br"),
-          _vm._v(
-            "\n            「申す」も謙譲語です。謙譲語にれる・られるを付けても尊敬語にはなりません。"
-          ),
-          _c("br"),
-          _vm._v(
-            "\n            『社長がおっしゃったように進めていきます。』が正解です。"
-          ),
-          _c("br"),
-          _c("br"),
-          _vm._v("\n            4）○△商事の□□様がお越しになられました。"),
-          _c("br"),
-          _vm._v(
-            "\n            「なられました」は二重敬語の典型的な表現です。"
-          ),
-          _c("br"),
-          _vm._v(
-            "\n            『○△商事の□□様がお越しになりました。』が正解です。"
-          ),
-          _c("br")
-        ]),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-primary center-block",
-            attrs: { type: "button" }
-          },
-          [_vm._v("次の問題へ")]
+      _c("button", [_vm._v("正解を表示する")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "alert alert-info" }, [
+        _c("strong", [_vm._v("正解!")])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "alert alert-danger" }, [
+        _c("strong", [_vm._v("不正解!")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("section", [
+      _c("h2", { staticClass: "quiz-commentary-h2" }, [
+        _c("img", {
+          staticClass: "quiz-commentary__logo",
+          attrs: { src: "/images/commentary-mark.png" }
+        }),
+        _vm._v("解説\n          ")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "quiz-commentary__text" }, [
+        _vm._v("\n            1）3）4）は、どこが間違っていたの？ "),
+        _c("br"),
+        _vm._v("\n            1）受付でうかがってください。"),
+        _c("br"),
+        _vm._v(
+          "\n            「うかがう」は謙譲語。謙譲語は自分または身内（自分の会社も含みます）の者に使う言葉で、相手に使うのは間違いです。"
         ),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "center-block", attrs: { type: "button" } },
-          [_vm._v("結果を見る")]
-        )
+        _c("br"),
+        _vm._v("\n            『受付でお尋ねください。』が正解です。"),
+        _c("br"),
+        _c("br"),
+        _vm._v("\n            3）部長が申されたように進めていきます。"),
+        _c("br"),
+        _vm._v(
+          "\n            「申す」も謙譲語です。謙譲語にれる・られるを付けても尊敬語にはなりません。"
+        ),
+        _c("br"),
+        _vm._v(
+          "\n            『社長がおっしゃったように進めていきます。』が正解です。"
+        ),
+        _c("br"),
+        _c("br"),
+        _vm._v("\n            4）○△商事の□□様がお越しになられました。"),
+        _c("br"),
+        _vm._v("\n            「なられました」は二重敬語の典型的な表現です。"),
+        _c("br"),
+        _vm._v(
+          "\n            『○△商事の□□様がお越しになりました。』が正解です。"
+        ),
+        _c("br")
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary center-block",
+          attrs: { type: "button" }
+        },
+        [_vm._v("次の問題へ")]
+      ),
+      _vm._v(" "),
+      _c("button", { staticClass: "center-block", attrs: { type: "button" } }, [
+        _vm._v("結果を見る")
       ])
     ])
   }
