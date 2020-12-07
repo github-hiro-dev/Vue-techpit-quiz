@@ -8,50 +8,35 @@
           <section>
             <h2 class="quiz-question-h2">
               <img class="quiz-question__logo" src="/images/what-is-mark.png" />
-              第1問
+              第{{quizNumber}}問
             </h2>
-            <p>正しい敬語を使った表現を１つ選んでください。</p>
+            <p>{{title}}</p>
             <div class="quiz-answer__list">
               <ul>
-                <li>
-                  <a>
-                    <button>1</button>
-                  </a>
-                  受付でうかがってください。
-                </li>
-                <li>
-                  <a>
-                    <button>2</button>
-                  </a>
-                  課長がおっしゃったように、ファイルをご覧ください。
-                </li>
-                <li>
-                  <a>
-                    <button>3</button>
-                  </a>
-                  部長が申されたように進めていきます。
-                </li>
-                <li>
-                  <a>
-                    <button>4</button>
-                  </a>
-                  ○△商事の□□様がお越しになられました。
+                <li v-for="(answer, index) in answers" :key=index>
+                    <button
+                      @click="goAnswer(index + 1)"
+                      :disabled="isAlreadyAnswered"
+                      >{{index + 1}}
+                    </button>
+                    {{answer}}  
                 </li>
               </ul>
             </div>
+            <div class="text-right">カテゴリー: {{ categoryName }}</div>
           </section>
           <section>
             <h2 class="quiz-correct-h2">
               <img class="quiz-correct__logo" src="/images/correct-mark.png" />正解
             </h2>
             <p>
-              <button class="quiz-correct-answer">1</button>
+              <button class="quiz-correct-answer" v-show="isAlreadyAnswered">{{correctAnswerNo}}</button>
             </p>
-            <button>正解を表示する</button>
-            <div class="alert alert-info">
+            <button @click="goAnswer(0)" v-show="!isAlreadyAnswered">正解を表示する</button>
+            <div class="alert alert-info" v-show="isCorrect">
               <strong>正解!</strong>
             </div>
-            <div class="alert alert-danger">
+            <div class="alert alert-danger" v-show="isMistake">
               <strong>不正解!</strong>
             </div>
           </section>
@@ -59,20 +44,27 @@
             <h2 class="quiz-commentary-h2">
               <img class="quiz-commentary__logo" src="/images/commentary-mark.png" />解説
             </h2>
-            <div class="quiz-commentary__text">
-              1）3）4）は、どこが間違っていたの？ <br>
-              1）受付でうかがってください。<br>
-              「うかがう」は謙譲語。謙譲語は自分または身内（自分の会社も含みます）の者に使う言葉で、相手に使うのは間違いです。<br>
-              『受付でお尋ねください。』が正解です。<br><br>
-              3）部長が申されたように進めていきます。<br>
-              「申す」も謙譲語です。謙譲語にれる・られるを付けても尊敬語にはなりません。<br>
-              『社長がおっしゃったように進めていきます。』が正解です。<br><br>
-              4）○△商事の□□様がお越しになられました。<br>
-              「なられました」は二重敬語の典型的な表現です。<br>
-              『○△商事の□□様がお越しになりました。』が正解です。<br>
+            <div class="quiz-commentary__text"
+              v-show="isAlreadyAnswered"
+              style="white-space:pre-wrap; word-wrap:break-word;"
+            >{{commentary}}
             </div>
-            <button type="button" class="btn btn-primary center-block">次の問題へ</button>
-            <button type="button" class="center-block">結果を見る</button>
+            <button
+              type="button" 
+              class="btn btn-primary center-block" 
+              @click="goNextQuiz" 
+              v-if="!isQuizFinish">
+                次の問題へ
+            </button>
+            <button
+              type="button" 
+              class="center-block" 
+              data-toggle="modal" 
+              data-target="#modal-result"
+              v-if="isQuizFinish"
+              @click="showResult">
+                結果を見る
+              </button>
           </section>
         </article>
 
@@ -85,15 +77,87 @@
 </template>
 
 <script>
-import TheHeader from "../layout/TheHeader";
-import TheFooter from "../layout/TheFooter";
-import TheSidebar from "../layout/TheSidebar";
+import TheHeader from "../layout/TheHeader"
+import TheFooter from "../layout/TheFooter"
+import TheSidebar from "../layout/TheSidebar"
 
 export default {
   components: {
     TheHeader,
     TheFooter,
     TheSidebar
+  },
+  data(){
+    return {
+      quizData: [],
+      title: "",
+      imageSrc: "",
+      answers: [],
+      commentary: "",
+      correctAnswerNo: 0,
+      isCorrect: false,
+      isMistake: false,
+      isAlreadyAnswered: false,
+      isQuizFinish: false,
+      score: 0,
+      quizNumber: 1,
+      categoryName: "",
+    };
+  },
+  mounted(){
+    const categories = this.$route.query.categories
+    this.$http.get(`/api/quiz?categories=${categories}`).then(response => {
+      this.quizData = response.data
+      this.findNextQuiz(0)
+    })
+  },
+  methods: {
+    goAnswer(selectAnswerNum){
+      if(selectAnswerNum === 0){
+        this.isCorrect = false
+        this.isMistale = false
+      }else if (selectAnswerNum === Number(this.correctAnswerNo)){
+        this.isCorrect = true
+        this.isMistake = false
+        this.score += 1
+      }else{
+        this.isCorrect = false
+        this.isMistake = true
+      }
+      this.isAlreadyAnswered = true
+
+      if(this.quizNumber >= 10){
+        this.endQuiz();
+      }
+    },
+    findNextQuiz(quizNumber){
+      this.title = this.quizData[quizNumber].title
+      this.answers = [
+        this.quizData[quizNumber].answer.answer_1,
+        this.quizData[quizNumber].answer.answer_2,
+        this.quizData[quizNumber].answer.answer_3,
+        this.quizData[quizNumber].answer.answer_4,
+      ]
+      this.commentary = this.quizData[quizNumber].answer.commentary
+      this.correctAnswerNo = this.quizData[quizNumber].answer.correct_answer_no
+      this.categoryName = this.quizData[quizNumber].category.name
+    },
+    goNextQuiz(){
+      if(this.quizNumber >= 10){
+        this.endQuiz()
+      }else{
+        this.findNextQuiz(this.quizNumber)
+        this.quizNumber += 1
+        this.isCorrect = false
+        this.isMistake = false
+        this.isAlreadyAnswered = false
+      }
+    },
+    endQuiz(){
+      this.isQuizFinish = true
+      this.answerNo = "-"
+      this.isAlreadyAnswered = true
+    }
   }
 }
 </script>
