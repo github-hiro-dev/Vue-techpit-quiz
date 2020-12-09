@@ -1,7 +1,5 @@
 <template>
     <div>
-        <the-header></the-header>
-
         <main>
             <div class="container">
                 <article class="col-md-8 col-xs-12">
@@ -100,8 +98,6 @@
                 <the-sidebar></the-sidebar>
             </div>
         </main>
-
-        <the-footer></the-footer>
         <the-modal
             :correctPercentageObject="correctPercentageObject"
             ref="modal"
@@ -110,15 +106,11 @@
 </template>
 
 <script>
-import TheHeader from "../layout/TheHeader";
-import TheFooter from "../layout/TheFooter";
 import TheSidebar from "../layout/TheSidebar";
 import TheModal from "../module/TheModal";
 
 export default {
     components: {
-        TheHeader,
-        TheFooter,
         TheSidebar,
         TheModal
     },
