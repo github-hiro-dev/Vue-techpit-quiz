@@ -355,9 +355,7 @@ __webpack_require__.r(__webpack_exports__);
       score: 0,
       quizNumber: 1,
       categoryName: "",
-      correctPercentageObject: {},
-      modalToggle: "",
-      modalTarget: ""
+      correctPercentageObject: {}
     };
   },
   mounted: function mounted() {
@@ -419,8 +417,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     showResult: function showResult() {
       this.$refs.modal.render();
-      this.modalToggle = "modal";
-      this.modalTarget = "#modal-result";
     }
   }
 });
@@ -39546,25 +39542,31 @@ var render = function() {
                     )
                   : _vm._e(),
                 _vm._v(" "),
-                _vm.isQuizFinish
-                  ? _c(
-                      "button",
+                _c(
+                  "button",
+                  {
+                    directives: [
                       {
-                        staticClass: "btn center-block",
-                        attrs: {
-                          type: "button",
-                          "data-toggle": _vm.modalToggle,
-                          "data-target": _vm.modalTarget
-                        },
-                        on: { click: _vm.showResult }
-                      },
-                      [
-                        _vm._v(
-                          "\n                        結果を見る\n                    "
-                        )
-                      ]
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.isQuizFinish,
+                        expression: "isQuizFinish"
+                      }
+                    ],
+                    staticClass: "btn center-block",
+                    attrs: {
+                      type: "button",
+                      "data-toggle": "modal",
+                      "data-target": "#modal-result"
+                    },
+                    on: { click: _vm.showResult }
+                  },
+                  [
+                    _vm._v(
+                      "\n                        結果を見る\n                    "
                     )
-                  : _vm._e()
+                  ]
+                )
               ])
             ]),
             _vm._v(" "),

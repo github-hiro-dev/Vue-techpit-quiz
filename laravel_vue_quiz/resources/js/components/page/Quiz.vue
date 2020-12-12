@@ -85,10 +85,10 @@
                         <button
                             type="button"
                             class="btn center-block"
-                            :data-toggle="modalToggle"
-                            :data-target="modalTarget"
+                            data-toggle="modal"
+                            data-target="#modal-result"
                             @click="showResult"
-                            v-if="isQuizFinish"
+                            v-show="isQuizFinish"
                         >
                             結果を見る
                         </button>
@@ -129,9 +129,7 @@ export default {
             score: 0,
             quizNumber: 1,
             categoryName: "",
-            correctPercentageObject: {},
-            modalToggle: "",
-            modalTarget: ""
+            correctPercentageObject: {}
         };
     },
     mounted() {
@@ -196,8 +194,6 @@ export default {
         },
         showResult() {
             this.$refs.modal.render();
-            this.modalToggle = "modal";
-            this.modalTarget = "#modal-result";
         }
     }
 };
