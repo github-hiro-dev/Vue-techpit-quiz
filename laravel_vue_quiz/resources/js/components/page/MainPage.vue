@@ -1,6 +1,6 @@
 <template>
     <div>
-        <the-header></the-header>
+        <the-header :auth="auth"></the-header>
         <router-view :errors="errors"></router-view>
         <the-footer></the-footer>
     </div>
@@ -16,6 +16,9 @@ export default {
         TheFooter
     },
     props:{
+        auth: {
+            type: Object | Array
+        },
         errors:{
             type: Object | Array
         }
