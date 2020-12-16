@@ -26,3 +26,7 @@ Route::get('/login', function () {
 });
 Route::post('/login', 'Auth\LoginController@login');
 Route::post('/logout', 'Auth\LoginController@logout');
+Route::post('/insertRanking', 'Web\RankingController@insertRanking');
+Route::get('/mypage', function () {
+    return view('mypage.index');
+});
