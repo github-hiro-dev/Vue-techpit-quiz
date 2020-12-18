@@ -71,9 +71,7 @@
                             class="quiz-commentary__text"
                             v-show="isAlreadyAnswered"
                             style="white-space:pre-wrap; word-wrap:break-word;"
-                        >
-                            {{ commentary }}
-                        </div>
+                        >{{ commentary }}</div>
                         <button
                             type="button"
                             class="btn btn-primary center-block"

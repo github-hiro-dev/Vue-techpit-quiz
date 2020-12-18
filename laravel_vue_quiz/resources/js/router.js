@@ -4,6 +4,7 @@ import Home from './components/page/Home'
 import Quiz from './components/page/Quiz'
 import Register from './components/page/Register'
 import Login from './components/page/Login'
+import Mypage from './components/page/Mypage'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
             path: '/login',
             name: 'login',
             component: Login
+        },
+        {
+            path: '/mypage',
+            name: 'mypage',
+            component: Mypage
         }
     ]
 })

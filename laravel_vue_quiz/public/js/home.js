@@ -99,25 +99,25 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   "extends": vue_chartjs__WEBPACK_IMPORTED_MODULE_0__["Bar"],
-  mounted: function mounted() {
-    this.renderChart({
-      labels: ["タ・ナカ", "Suzuki", "Saito", "Moriyama", "アオキ", "村町"],
-      datasets: [{
-        label: "最高得点率",
-        backgroundColor: "rgba(0, 170, 248, 0.47)",
-        data: [100, 90, 80, 70, 60, 50]
-      }]
-    }, {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true,
-            min: 0,
-            max: 100
-          }
-        }]
-      }
-    });
+  props: {
+    chartData: {
+      type: Object
+    }
+  },
+  methods: {
+    renderBarChart: function renderBarChart() {
+      this.renderChart(this.chartData, {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true,
+              min: 0,
+              max: 100
+            }
+          }]
+        }
+      });
+    }
   }
 });
 
@@ -259,6 +259,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -270,7 +272,12 @@ __webpack_require__.r(__webpack_exports__);
     return {
       categories: [1],
       information: [],
-      category: []
+      category: [],
+      rankingAlldata: {},
+      week: {},
+      month: {},
+      total: {},
+      rankingType: "1"
     };
   },
   mounted: function mounted() {
@@ -282,10 +289,50 @@ __webpack_require__.r(__webpack_exports__);
     this.$http.get("/api/category").then(function (response) {
       _this.category = response.data;
     });
+    this.$http.get("/api/ranking").then(function (response) {
+      _this.rankingAlldata = response.data;
+
+      _this.setRanking();
+    });
   },
   methods: {
     goQuiz: function goQuiz() {
       this.$router.push("/quiz?categories=" + this.categories);
+    },
+    setRanking: function setRanking() {
+      var _this2 = this;
+
+      this.week = Object.assign({}, this.week, {
+        labels: this.rankingAlldata.weekRankingData.name,
+        datasets: [{
+          label: ["最高得点率"],
+          backgroundColor: "rgba(0, 170, 248, 0.47)",
+          data: this.rankingAlldata.weekRankingData.percentage_correct_answer
+        }]
+      });
+      this.month = Object.assign({}, this.month, {
+        labels: this.rankingAlldata.monthRankingData.name,
+        datasets: [{
+          label: ["最高得点率"],
+          backgroundColor: "rgba(0, 170, 248, 0.47)",
+          data: this.rankingAlldata.monthRankingData.percentage_correct_answer
+        }]
+      });
+      this.total = Object.assign({}, this.total, {
+        labels: this.rankingAlldata.totalRankingData.name,
+        datasets: [{
+          label: ["最高得点率"],
+          backgroundColor: "rgba(0, 170, 248, 0.47)",
+          data: this.rankingAlldata.totalRankingData.percentage_correct_answer
+        }]
+      });
+      this.$nextTick(function () {
+        _this2.$refs.totalChart.renderBarChart();
+
+        _this2.$refs.monthChart.renderBarChart();
+
+        _this2.$refs.weekChart.renderBarChart();
+      });
     }
   }
 });
@@ -39207,12 +39254,117 @@ var render = function() {
             _c("section", { staticClass: "home-quiz__ranking" }, [
               _vm._m(3),
               _vm._v(" "),
-              _vm._m(4),
+              _c("div", [
+                _c("label", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.rankingType,
+                        expression: "rankingType"
+                      }
+                    ],
+                    staticClass: "ranking-radio",
+                    attrs: { type: "radio", value: "1", checked: "" },
+                    domProps: { checked: _vm._q(_vm.rankingType, "1") },
+                    on: {
+                      change: function($event) {
+                        _vm.rankingType = "1"
+                      }
+                    }
+                  }),
+                  _vm._v("総合\n                        ")
+                ]),
+                _vm._v(" "),
+                _c("label", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.rankingType,
+                        expression: "rankingType"
+                      }
+                    ],
+                    staticClass: "ranking-radio",
+                    attrs: { type: "radio", value: "2" },
+                    domProps: { checked: _vm._q(_vm.rankingType, "2") },
+                    on: {
+                      change: function($event) {
+                        _vm.rankingType = "2"
+                      }
+                    }
+                  }),
+                  _vm._v("今月\n                        ")
+                ]),
+                _vm._v(" "),
+                _c("label", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.rankingType,
+                        expression: "rankingType"
+                      }
+                    ],
+                    staticClass: "ranking-radio",
+                    attrs: { type: "radio", value: "3" },
+                    domProps: { checked: _vm._q(_vm.rankingType, "3") },
+                    on: {
+                      change: function($event) {
+                        _vm.rankingType = "3"
+                      }
+                    }
+                  }),
+                  _vm._v("今週\n                        ")
+                ])
+              ]),
               _vm._v(" "),
               _c(
                 "div",
                 { staticClass: "home_quiz__ranking-chart" },
-                [_c("bar-chart")],
+                [
+                  _c("bar-chart", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.rankingType === "1",
+                        expression: "rankingType === '1'"
+                      }
+                    ],
+                    ref: "totalChart",
+                    attrs: { chartData: _vm.total }
+                  }),
+                  _vm._v(" "),
+                  _c("bar-chart", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.rankingType === "2",
+                        expression: "rankingType === '2'"
+                      }
+                    ],
+                    ref: "monthChart",
+                    attrs: { chartData: _vm.month }
+                  }),
+                  _vm._v(" "),
+                  _c("bar-chart", {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.rankingType === "3",
+                        expression: "rankingType === '3'"
+                      }
+                    ],
+                    ref: "weekChart",
+                    attrs: { chartData: _vm.week }
+                  })
+                ],
                 1
               )
             ]),
@@ -39221,7 +39373,7 @@ var render = function() {
               "section",
               { staticClass: "home__notice" },
               [
-                _vm._m(5),
+                _vm._m(4),
                 _vm._v(" "),
                 _vm._l(_vm.information, function(info, index) {
                   return _c("dl", { key: index }, [
@@ -39334,41 +39486,6 @@ var staticRenderFns = [
         attrs: { src: "/images/graph-icon.png" }
       }),
       _vm._v("ランキング\n                    ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("label", [
-        _c("input", {
-          staticClass: "ranking-radio",
-          attrs: {
-            type: "radio",
-            name: "ranking-radio",
-            value: "1",
-            checked: ""
-          }
-        }),
-        _vm._v("総合\n                        ")
-      ]),
-      _vm._v(" "),
-      _c("label", [
-        _c("input", {
-          staticClass: "ranking-radio",
-          attrs: { type: "radio", name: "ranking-radio", value: "2" }
-        }),
-        _vm._v("今月\n                        ")
-      ]),
-      _vm._v(" "),
-      _c("label", [
-        _c("input", {
-          staticClass: "ranking-radio",
-          attrs: { type: "radio", name: "ranking-radio", value: "3" }
-        }),
-        _vm._v("今週\n                        ")
-      ])
     ])
   },
   function() {

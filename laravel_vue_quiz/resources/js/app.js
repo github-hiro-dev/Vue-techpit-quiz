@@ -9,6 +9,10 @@ window.$ = window.jQuery = jQuery
 require('bootstrap')
 
 Vue.prototype.$http = axios
+axios.defaults.headers.common['Authorization'] = "Bearer " + document
+    .querySelector('meta[name="api-token"]')
+    .getAttribute("content");
+
 Vue.use(SocialSharing)
 
 new Vue({
