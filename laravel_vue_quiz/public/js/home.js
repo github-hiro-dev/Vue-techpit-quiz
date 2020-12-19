@@ -258,9 +258,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -294,8 +291,27 @@ __webpack_require__.r(__webpack_exports__);
 
       _this.setRanking();
     });
+    var referrer = document.referrer;
+
+    if (referrer.indexOf("/login") !== -1) {
+      this.displayNotification("ログインしました", "info");
+      this.resetReferrer();
+    } else if (referrer.indexOf("/register") !== -1) {
+      this.displayNotification("会員登録しました", "success");
+      this.resetReferrer();
+    }
   },
   methods: {
+    checkAll: function checkAll() {
+      var val = [];
+      this.category.forEach(function (element) {
+        val.push(element.id);
+      });
+      this.categories = val;
+    },
+    checkAllOff: function checkAllOff() {
+      this.categories = [];
+    },
     goQuiz: function goQuiz() {
       this.$router.push("/quiz?categories=" + this.categories);
     },
@@ -332,6 +348,18 @@ __webpack_require__.r(__webpack_exports__);
         _this2.$refs.monthChart.renderBarChart();
 
         _this2.$refs.weekChart.renderBarChart();
+      });
+    },
+    resetReferrer: function resetReferrer() {
+      Object.defineProperty(document, "referrer", {
+        value: location.href
+      });
+    },
+    displayNotification: function displayNotification(text, type) {
+      this.$notify({
+        title: "お知らせ",
+        text: text,
+        type: type
       });
     }
   }
@@ -39330,235 +39358,273 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("main", [
-      _c(
-        "div",
-        { staticClass: "container" },
-        [
-          _c("article", { staticClass: "col-md-8 col-xs-12" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            _c("section", { staticClass: "home-quiz__setting" }, [
-              _vm._m(1),
+    _c(
+      "main",
+      [
+        _c(
+          "div",
+          { staticClass: "container" },
+          [
+            _c("article", { staticClass: "col-md-8 col-xs-12" }, [
+              _vm._m(0),
               _vm._v(" "),
-              _c(
-                "form",
-                [
-                  _vm._l(_vm.category, function(cate, index) {
-                    return _c("label", { key: index }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.categories,
-                            expression: "categories"
-                          }
-                        ],
-                        attrs: { type: "checkbox" },
-                        domProps: {
-                          value: cate.id,
-                          checked: Array.isArray(_vm.categories)
-                            ? _vm._i(_vm.categories, cate.id) > -1
-                            : _vm.categories
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.categories,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = cate.id,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 && (_vm.categories = $$a.concat([$$v]))
+              _c("section", { staticClass: "home-quiz__setting" }, [
+                _vm._m(1),
+                _vm._v(" "),
+                _c(
+                  "form",
+                  [
+                    _vm._l(_vm.category, function(cate, index) {
+                      return _c("label", { key: index }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.categories,
+                              expression: "categories"
+                            }
+                          ],
+                          attrs: { type: "checkbox" },
+                          domProps: {
+                            value: cate.id,
+                            checked: Array.isArray(_vm.categories)
+                              ? _vm._i(_vm.categories, cate.id) > -1
+                              : _vm.categories
+                          },
+                          on: {
+                            change: function($event) {
+                              var $$a = _vm.categories,
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = cate.id,
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 &&
+                                    (_vm.categories = $$a.concat([$$v]))
+                                } else {
+                                  $$i > -1 &&
+                                    (_vm.categories = $$a
+                                      .slice(0, $$i)
+                                      .concat($$a.slice($$i + 1)))
+                                }
                               } else {
-                                $$i > -1 &&
-                                  (_vm.categories = $$a
-                                    .slice(0, $$i)
-                                    .concat($$a.slice($$i + 1)))
+                                _vm.categories = $$c
                               }
-                            } else {
-                              _vm.categories = $$c
                             }
                           }
+                        }),
+                        _vm._v(
+                          _vm._s(cate.name) + " \n                        "
+                        )
+                      ])
+                    }),
+                    _vm._v(" "),
+                    _c("div", {}, [
+                      _vm._v(
+                        "\n                            全項目チェック\n                            "
+                      ),
+                      _c(
+                        "button",
+                        {
+                          attrs: { type: "button" },
+                          on: { click: _vm.checkAll }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                ON\n                            "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          attrs: { type: "button" },
+                          on: { click: _vm.checkAllOff }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                OFF\n                            "
+                          )
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" },
+                        on: {
+                          click: function($event) {
+                            $event.stopPropagation()
+                            $event.preventDefault()
+                            return _vm.goQuiz()
+                          }
                         }
-                      }),
-                      _vm._v(_vm._s(cate.name) + " \n                        ")
-                    ])
-                  }),
-                  _vm._v(" "),
-                  _vm._m(2),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-primary",
-                      attrs: { type: "submit" },
+                      },
+                      [
+                        _vm._v(
+                          "\n                            出題開始\n                        "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      attrs: { type: "hidden", name: "_token", value: "" }
+                    })
+                  ],
+                  2
+                )
+              ]),
+              _vm._v(" "),
+              _c("section", { staticClass: "home-quiz__ranking" }, [
+                _vm._m(2),
+                _vm._v(" "),
+                _c("div", [
+                  _c("label", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.rankingType,
+                          expression: "rankingType"
+                        }
+                      ],
+                      staticClass: "ranking-radio",
+                      attrs: { type: "radio", value: "1", checked: "" },
+                      domProps: { checked: _vm._q(_vm.rankingType, "1") },
                       on: {
-                        click: function($event) {
-                          $event.stopPropagation()
-                          $event.preventDefault()
-                          return _vm.goQuiz()
+                        change: function($event) {
+                          _vm.rankingType = "1"
                         }
                       }
-                    },
-                    [
-                      _vm._v(
-                        "\n                            出題開始\n                        "
-                      )
-                    ]
-                  ),
+                    }),
+                    _vm._v("総合\n                        ")
+                  ]),
                   _vm._v(" "),
-                  _c("input", {
-                    attrs: { type: "hidden", name: "_token", value: "" }
+                  _c("label", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.rankingType,
+                          expression: "rankingType"
+                        }
+                      ],
+                      staticClass: "ranking-radio",
+                      attrs: { type: "radio", value: "2" },
+                      domProps: { checked: _vm._q(_vm.rankingType, "2") },
+                      on: {
+                        change: function($event) {
+                          _vm.rankingType = "2"
+                        }
+                      }
+                    }),
+                    _vm._v("今月\n                        ")
+                  ]),
+                  _vm._v(" "),
+                  _c("label", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.rankingType,
+                          expression: "rankingType"
+                        }
+                      ],
+                      staticClass: "ranking-radio",
+                      attrs: { type: "radio", value: "3" },
+                      domProps: { checked: _vm._q(_vm.rankingType, "3") },
+                      on: {
+                        change: function($event) {
+                          _vm.rankingType = "3"
+                        }
+                      }
+                    }),
+                    _vm._v("今週\n                        ")
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "home_quiz__ranking-chart" },
+                  [
+                    _c("bar-chart", {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.rankingType === "1",
+                          expression: "rankingType === '1'"
+                        }
+                      ],
+                      ref: "totalChart",
+                      attrs: { chartData: _vm.total }
+                    }),
+                    _vm._v(" "),
+                    _c("bar-chart", {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.rankingType === "2",
+                          expression: "rankingType === '2'"
+                        }
+                      ],
+                      ref: "monthChart",
+                      attrs: { chartData: _vm.month }
+                    }),
+                    _vm._v(" "),
+                    _c("bar-chart", {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.rankingType === "3",
+                          expression: "rankingType === '3'"
+                        }
+                      ],
+                      ref: "weekChart",
+                      attrs: { chartData: _vm.week }
+                    })
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "section",
+                { staticClass: "home__notice" },
+                [
+                  _vm._m(3),
+                  _vm._v(" "),
+                  _vm._l(_vm.information, function(info, index) {
+                    return _c("dl", { key: index }, [
+                      _c("dt", [_vm._v(_vm._s(info.created_at))]),
+                      _vm._v(" "),
+                      _c("dd", [_vm._v(_vm._s(info.information))])
+                    ])
                   })
                 ],
                 2
               )
             ]),
             _vm._v(" "),
-            _c("section", { staticClass: "home-quiz__ranking" }, [
-              _vm._m(3),
-              _vm._v(" "),
-              _c("div", [
-                _c("label", [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.rankingType,
-                        expression: "rankingType"
-                      }
-                    ],
-                    staticClass: "ranking-radio",
-                    attrs: { type: "radio", value: "1", checked: "" },
-                    domProps: { checked: _vm._q(_vm.rankingType, "1") },
-                    on: {
-                      change: function($event) {
-                        _vm.rankingType = "1"
-                      }
-                    }
-                  }),
-                  _vm._v("総合\n                        ")
-                ]),
-                _vm._v(" "),
-                _c("label", [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.rankingType,
-                        expression: "rankingType"
-                      }
-                    ],
-                    staticClass: "ranking-radio",
-                    attrs: { type: "radio", value: "2" },
-                    domProps: { checked: _vm._q(_vm.rankingType, "2") },
-                    on: {
-                      change: function($event) {
-                        _vm.rankingType = "2"
-                      }
-                    }
-                  }),
-                  _vm._v("今月\n                        ")
-                ]),
-                _vm._v(" "),
-                _c("label", [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.rankingType,
-                        expression: "rankingType"
-                      }
-                    ],
-                    staticClass: "ranking-radio",
-                    attrs: { type: "radio", value: "3" },
-                    domProps: { checked: _vm._q(_vm.rankingType, "3") },
-                    on: {
-                      change: function($event) {
-                        _vm.rankingType = "3"
-                      }
-                    }
-                  }),
-                  _vm._v("今週\n                        ")
-                ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "home_quiz__ranking-chart" },
-                [
-                  _c("bar-chart", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.rankingType === "1",
-                        expression: "rankingType === '1'"
-                      }
-                    ],
-                    ref: "totalChart",
-                    attrs: { chartData: _vm.total }
-                  }),
-                  _vm._v(" "),
-                  _c("bar-chart", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.rankingType === "2",
-                        expression: "rankingType === '2'"
-                      }
-                    ],
-                    ref: "monthChart",
-                    attrs: { chartData: _vm.month }
-                  }),
-                  _vm._v(" "),
-                  _c("bar-chart", {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.rankingType === "3",
-                        expression: "rankingType === '3'"
-                      }
-                    ],
-                    ref: "weekChart",
-                    attrs: { chartData: _vm.week }
-                  })
-                ],
-                1
-              )
-            ]),
-            _vm._v(" "),
-            _c(
-              "section",
-              { staticClass: "home__notice" },
-              [
-                _vm._m(4),
-                _vm._v(" "),
-                _vm._l(_vm.information, function(info, index) {
-                  return _c("dl", { key: index }, [
-                    _c("dt", [_vm._v(_vm._s(info.created_at))]),
-                    _vm._v(" "),
-                    _c("dd", [_vm._v(_vm._s(info.information))])
-                  ])
-                })
-              ],
-              2
-            )
-          ]),
-          _vm._v(" "),
-          _c("the-sidebar")
-        ],
-        1
-      )
-    ])
+            _c("the-sidebar")
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("notifications")
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = [
@@ -39598,49 +39664,6 @@ var staticRenderFns = [
         attrs: { src: "/images/directory-icon.png" }
       }),
       _vm._v("出題設定\n                    ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", {}, [
-      _vm._v(
-        "\n                            全項目チェック\n                            "
-      ),
-      _c(
-        "button",
-        {
-          attrs: {
-            type: "button",
-            name: "check_all",
-            id: "check-all",
-            value: "1"
-          }
-        },
-        [
-          _vm._v(
-            "\n                                ON\n                            "
-          )
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          attrs: {
-            type: "button",
-            name: "check_all_off",
-            id: "check-all-off",
-            value: "1"
-          }
-        },
-        [
-          _vm._v(
-            "\n                                OFF\n                            "
-          )
-        ]
-      )
     ])
   },
   function() {

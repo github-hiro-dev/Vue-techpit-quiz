@@ -40,17 +40,13 @@
                                 全項目チェック
                                 <button
                                     type="button"
-                                    name="check_all"
-                                    id="check-all"
-                                    value="1"
+                                    @click="checkAll"
                                 >
                                     ON
                                 </button>
                                 <button
                                     type="button"
-                                    name="check_all_off"
-                                    id="check-all-off"
-                                    value="1"
+                                    @click="checkAllOff"
                                 >
                                     OFF
                                 </button>
@@ -121,6 +117,7 @@
 
                 <the-sidebar></the-sidebar>
             </div>
+            <notifications />
         </main>
     </div>
 </template>
@@ -157,8 +154,27 @@ export default {
             this.rankingAlldata = response.data;
             this.setRanking();
         });
+
+        const referrer = document.referrer;
+        if (referrer.indexOf("/login") !== -1) {
+            this.displayNotification("ログインしました", "info");
+            this.resetReferrer();
+        } else if (referrer.indexOf("/register") !== -1) {
+            this.displayNotification("会員登録しました", "success");
+            this.resetReferrer();
+        }
     },
     methods: {
+        checkAll(){
+            let val =[]
+            this.category.forEach(element => {
+                val.push(element.id)
+            })
+            this.categories = val
+        },
+        checkAllOff(){
+            this.categories = []
+        },
         goQuiz() {
             this.$router.push("/quiz?categories=" + this.categories);
         },
@@ -202,6 +218,18 @@ export default {
                 this.$refs.weekChart.renderBarChart();
             });
         },
+        resetReferrer(){
+            Object.defineProperty(document, "referrer",{
+                value: location.href
+            });
+        },
+        displayNotification(text, type){
+            this.$notify({
+                title: "お知らせ",
+                text: text,
+                type: type
+            })
+        }
     }
 };
 </script>
