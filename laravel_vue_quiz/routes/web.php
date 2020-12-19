@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('index');
 });
 Route::get('/quiz', function () {
-    return view('quiz.index');
+    return view('index');
 });
 Route::get('/register', function () {
     return view('auth.register.index');
@@ -24,12 +24,12 @@ Route::post('/register', 'Auth\RegisterController@register');
 Route::get('/login', function () {
     return view('auth.login.index');
 });
-Route::post('/login', 'Auth\LoginController@login');
+Route::post('/login', 'Auth\LoginController@login')->name('login');
 Route::post('/logout', 'Auth\LoginController@logout');
 Route::post('/insertRanking', 'Web\RankingController@insertRanking');
 Route::get('/mypage', function () {
-    return view('mypage.index');
-});
+    return view('index');
+})->middleware('auth');
 Route::get('/keyword', function () {
-    return view('keyword.index');
+    return view('index');
 });
