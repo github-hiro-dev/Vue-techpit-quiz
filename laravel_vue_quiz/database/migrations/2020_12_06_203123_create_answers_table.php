@@ -22,7 +22,7 @@ class CreateAnswersTable extends Migration
             $table->integer('correct_answer_no');
             $table->text('commentary');
             $table->integer('quiz_id');
-            $table->foreign('quiz_id')->references('id')->on('quizzes');
+            $table->foreign('quiz_id')->references('id')->on('quizzes')->onDelete('cascade');
             $table->timestamps();
         });
     }
